@@ -34,6 +34,8 @@
 1. created 'common.py'
 2. moved BaseModel from main.py to 'common.py'
 
+### litestar --app step1.main:app run ###
+
 ### OpenAPI site can be accessed via: ###
    - http://localhost:8000/schema
    - http://localhost:8000/schema/swagger
