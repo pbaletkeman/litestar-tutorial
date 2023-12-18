@@ -33,3 +33,10 @@
 ## refactor to extract common/shared elements into their own file ###
 1. created 'common.py'
 2. moved BaseModel from main.py to 'common.py'
+
+OpenAPI site can be accessed via:
+   - http://localhost:8000/schema
+   - http://localhost:8000/schema/swagger
+   - http://localhost:8000/schema/elements
+   - http://localhost:8000/schema/redoc
+   - http://localhost:8000/schema/rapidoc
