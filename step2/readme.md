@@ -1,4 +1,3 @@
-## rename app.py to main.py ###
 1. added `OpenAPIControllerExtra` to main.py to specify favicon for OpenAPI interfaces
 2. added `openapi_config=OpenAPIConfig`:
    1. added title and version
