@@ -8,7 +8,8 @@ Taken directly from https://docs.litestar.dev/latest/tutorials/repository-tutori
    - sqlalchemy = "^2.0.23"
 3. activate poetry environment
 4. command line execute `litestar --app inital.app:app run`
-5. OpenAPI site can be accessed via:
+
+### OpenAPI site can be accessed via: ###
    - http://localhost:8000/schema
    - http://localhost:8000/schema/swagger
    - http://localhost:8000/schema/elements
