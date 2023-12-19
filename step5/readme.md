@@ -2,7 +2,6 @@
 2. Added controller/book.py, this is pretty much a copy of controller/author.py
 3. Connected BookController to route handler in main.py
 
-
 ### litestar --app step4.main:app run ###
 
 ### OpenAPI site can be accessed via: ###
