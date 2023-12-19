@@ -45,12 +45,14 @@ class AuthorController(Controller):
     """Author CRUD"""
 
     dependencies = {"authors_repo": Provide(provide_authors_repo)}
+    path = "/authors"
+    tags = ["Author CRUD"]
 
-    @get(path="/authors")
+    @get()
     async def list_authors(
-        self,
-        authors_repo: AuthorRepository,
-        limit_offset: LimitOffset,
+            self,
+            authors_repo: AuthorRepository,
+            limit_offset: LimitOffset,
     ) -> OffsetPagination[Author]:
         """List authors."""
         results, total = await authors_repo.list_and_count(limit_offset)
@@ -62,11 +64,11 @@ class AuthorController(Controller):
             offset=limit_offset.offset,
         )
 
-    @post(path="/authors")
+    @post()
     async def create_author(
-        self,
-        authors_repo: AuthorRepository,
-        data: AuthorCreate,
+            self,
+            authors_repo: AuthorRepository,
+            data: AuthorCreate,
     ) -> Author:
         """Create a new author."""
         obj = await authors_repo.add(
@@ -75,21 +77,21 @@ class AuthorController(Controller):
         await authors_repo.session.commit()
         return Author.model_validate(obj)
 
-    @get(path="/authors/{author_id:uuid}", dependencies={"authors_repo": Provide(provide_author_details_repo)})
+    @get(path="/{author_id:uuid}", dependencies={"authors_repo": Provide(provide_author_details_repo)})
     async def get_author(
-        self,
-        authors_repo: AuthorRepository,
-        author_id: UUID = Parameter(
-            title="Author ID",
-            description="The author to retrieve.",
-        ),
+            self,
+            authors_repo: AuthorRepository,
+            author_id: UUID = Parameter(
+                title="Author ID",
+                description="The author to retrieve.",
+            ),
     ) -> Author:
         """Get an existing author."""
         obj = await authors_repo.get(author_id)
         return Author.model_validate(obj)
 
     @put(
-        path="/authors/{author_id:uuid}",
+        path="/{author_id:uuid}",
         dependencies={"authors_repo": Provide(provide_author_details_repo)},
     )
     async def put_author(
@@ -109,17 +111,17 @@ class AuthorController(Controller):
         return Author.model_validate(obj)
 
     @patch(
-        path="/authors/{author_id:uuid}",
+        path="/{author_id:uuid}",
         dependencies={"authors_repo": Provide(provide_author_details_repo)},
     )
     async def patch_author(
-        self,
-        authors_repo: AuthorRepository,
-        data: AuthorUpdate,
-        author_id: UUID = Parameter(
-            title="Author ID",
-            description="The author to update.",
-        ),
+            self,
+            authors_repo: AuthorRepository,
+            data: AuthorUpdate,
+            author_id: UUID = Parameter(
+                title="Author ID",
+                description="The author to update.",
+            ),
     ) -> Author:
         """Update an author, ignoring empty values."""
         raw_obj = data.model_dump(exclude_unset=True, exclude_none=True)
@@ -128,14 +130,14 @@ class AuthorController(Controller):
         await authors_repo.session.commit()
         return Author.model_validate(obj)
 
-    @delete(path="/authors/{author_id:uuid}")
+    @delete(path="/{author_id:uuid}")
     async def delete_author(
-        self,
-        authors_repo: AuthorRepository,
-        author_id: UUID = Parameter(
-            title="Author ID",
-            description="The author to delete.",
-        ),
+            self,
+            authors_repo: AuthorRepository,
+            author_id: UUID = Parameter(
+                title="Author ID",
+                description="The author to delete.",
+            ),
     ) -> None:
         """Delete a author from the system."""
         _ = await authors_repo.delete(author_id)

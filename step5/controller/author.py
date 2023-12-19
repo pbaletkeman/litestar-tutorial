@@ -16,7 +16,7 @@ from litestar.repository.filters import LimitOffset
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from step4.model.author import AuthorModel, Author, AuthorCreate, AuthorUpdate
+from step5.model.author import AuthorModel, Author, AuthorCreate, AuthorUpdate
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession

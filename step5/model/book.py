@@ -6,7 +6,7 @@ from advanced_alchemy.base import UUIDAuditBase
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from step4.common import BaseModel
+from step5.common import BaseModel
 
 
 class BookModel(UUIDAuditBase):

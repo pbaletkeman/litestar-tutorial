@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from litestar import Litestar
+from litestar.config.compression import CompressionConfig
 from litestar.contrib.sqlalchemy.base import UUIDBase
 from litestar.contrib.sqlalchemy.plugins import AsyncSessionConfig, SQLAlchemyAsyncConfig, SQLAlchemyInitPlugin
 from litestar.di import Provide
@@ -12,6 +11,7 @@ from litestar.repository.filters import LimitOffset
 from litestar.static_files import StaticFilesConfig
 
 from step4.controller.author import AuthorController
+from step4.controller.book import BookController
 
 
 def provide_limit_offset_pagination(
@@ -55,7 +55,7 @@ class OpenAPIControllerExtra(OpenAPIController):
 
 
 app = Litestar(
-    route_handlers=[AuthorController],
+    route_handlers=[AuthorController, BookController],
     on_startup=[on_startup],
     openapi_config=OpenAPIConfig(
         title='My API', version='1.0.0',
@@ -71,4 +71,5 @@ app = Litestar(
     )],
     plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
     dependencies={"limit_offset": Provide(provide_limit_offset_pagination)},
+    compression_config=CompressionConfig(backend="brotli", brotli_gzip_fallback=True, brotli_quality=5),
 )
