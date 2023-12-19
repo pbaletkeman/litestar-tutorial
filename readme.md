@@ -1,6 +1,7 @@
 ## About ##
 
-This is a sample project showing the progression from the tutorial project found here https://docs.litestar.dev/latest/tutorials/repository-tutorial/03-repository-controller.html to a Litestar which has:
+This is a sample project showing the progression from the tutorial project found here https://docs.litestar.dev/latest/tutorials/repository-tutorial/03-repository-controller.html<br>
+to a Litestar which has:
 
 - endpoints for the books table
 - endpoints allowing for bulk book creation
