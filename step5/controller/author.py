@@ -54,7 +54,10 @@ class AuthorController(Controller):
         authors_repo: AuthorRepository,
         limit_offset: LimitOffset,
     ) -> OffsetPagination[Author]:
-        """List authors."""
+        """
+        ### List authors ###
+        List all the **author** records in paginated form with the *total* record count.
+        """
         results, total = await authors_repo.list_and_count(limit_offset)
         type_adapter = TypeAdapter(list[Author])
         return OffsetPagination[Author](
@@ -70,7 +73,20 @@ class AuthorController(Controller):
         authors_repo: AuthorRepository,
         data: AuthorCreate,
     ) -> Author:
-        """Create a new author."""
+        """
+        ### Create Author ###
+        Create a new **author**.
+        ```Example Data:
+        {
+          "name": "John Q Public",
+          "dob": "2020-01-04"
+        }
+        ===================
+        {
+          "name": "Joe Doe"
+        }
+        ```
+        """
         obj = await authors_repo.add(
             AuthorModel(**data.model_dump(exclude_unset=True, exclude_none=True)),
         )
@@ -86,7 +102,10 @@ class AuthorController(Controller):
             description="The author to retrieve.",
         ),
     ) -> AuthorAndBooks:
-        """Get an existing author."""
+        """
+        ### Get Author And Their Books
+        Get an existing **author** with all of their **books**.
+        """
         obj = await authors_repo.get(author_id)
         return AuthorAndBooks.model_validate(obj)
 
@@ -99,7 +118,10 @@ class AuthorController(Controller):
             description="The author to retrieve.",
         ),
     ) -> Author:
-        """Get an existing author."""
+        """
+        ### Get Author ###
+        Get an existing **author**.
+        """
         obj = await authors_repo.get(author_id)
         return Author.model_validate(obj)
 
@@ -116,7 +138,20 @@ class AuthorController(Controller):
                 description="The author to update.",
             ),
     ) -> Author:
-        """Update an author, including empty values."""
+        """
+        ### Put Author
+        Update an **author**, including empty values.
+        ```Example Data:
+        {
+          "name": "John Q Public",
+          "dob": "2020-01-04"
+        }
+        ===================
+        {
+          "name": "Joe Doe"
+        }
+        ```
+        """
         raw_obj = data.model_dump(exclude_unset=False, exclude_none=False)
         raw_obj.update({"id": author_id})
         obj = await authors_repo.update(AuthorModel(**raw_obj))
@@ -136,7 +171,20 @@ class AuthorController(Controller):
             description="The author to update.",
         ),
     ) -> Author:
-        """Update an author, ignoring empty values."""
+        """
+        ### Patch Author ###
+        Update an **author**, ignoring empty values.
+        ```Example Data:
+        {
+          "name": "John Q Public",
+          "dob": "2020-01-04"
+        }
+        ===================
+        {
+          "name": "Joe Doe"
+        }
+        ```
+        """
         raw_obj = data.model_dump(exclude_unset=True, exclude_none=True)
         raw_obj.update({"id": author_id})
         obj = await authors_repo.update(AuthorModel(**raw_obj))
@@ -152,6 +200,9 @@ class AuthorController(Controller):
             description="The author to delete.",
         ),
     ) -> None:
-        """Delete a author from the system."""
+        """
+        ### Delete Author ###
+        Delete an **author** from the system.
+        """
         _ = await authors_repo.delete(author_id)
         await authors_repo.session.commit()

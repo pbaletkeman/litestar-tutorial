@@ -52,7 +52,10 @@ class BookController(Controller):
             book_repo: BookRepository,
             limit_offset: LimitOffset,
     ) -> OffsetPagination[Book]:
-        """List books."""
+        """
+        ### List All ###
+        List, **book** records, paginated
+        """
         results, total = await book_repo.list_and_count(limit_offset)
         type_adapter = TypeAdapter(list[Book])
         return OffsetPagination[Book](
@@ -68,7 +71,16 @@ class BookController(Controller):
             book_repo: BookRepository,
             data: BookCreate,
     ) -> Book:
-        """Create a new book."""
+        """
+        ### Create Book ###
+        Create a new **book**.
+        ```Example Data:
+        {
+          "title": "Book Title",
+          "author_id": "78424c75-5c41-4b25-9735-3c9f7d05c59e"
+        }
+        ```
+        """
         obj = await book_repo.add(
             BookModel(**data.model_dump(exclude_unset=True, exclude_none=True)),
         )
@@ -81,7 +93,18 @@ class BookController(Controller):
             book_repo: BookRepository,
             data: BulkBookCreate,
     ) -> list[Book]:
-        """Create a new book."""
+        """
+        ### Bulk Create New Book ###
+        Create many new **book** records.
+        ```Example Data:
+        {
+          "title": [
+            "Book Title 1", "Book Title 2", "Book Title 3"
+          ],
+          "author_id": "78424c75-5c41-4b25-9735-3c9f7d05c59e"
+        }
+        ```
+        """
         new_data = self.Helper.convert_books(data)
         obj = await book_repo.add_many(
             [BookModel(**d) for d in new_data]
@@ -98,7 +121,10 @@ class BookController(Controller):
                 description="The book to retrieve.",
             ),
     ) -> Book:
-        """Get an existing book."""
+        """
+        ### Get Book ###
+        Get an existing **book**.
+        """
         obj = await book_repo.get(book_id)
         return Book.model_validate(obj)
 
@@ -112,7 +138,16 @@ class BookController(Controller):
                 description="The book to update.",
             ),
     ) -> Book:
-        """Update a book, including empty values."""
+        """
+        ### Put Book ###
+        Update a **book**, including empty values.
+        ```Example Data:
+        {
+          "title": "new book title",
+          "author_id": "78424c75-5c41-4b25-9735-3c9f7d05c59e"
+        }
+        ```
+        """
         raw_obj = data.model_dump(exclude_unset=False, exclude_none=False)
         raw_obj.update({"id": book_id})
         obj = await book_repo.update(BookModel(**raw_obj))
@@ -129,7 +164,16 @@ class BookController(Controller):
                 description="The book to update.",
             ),
     ) -> Book:
-        """Update a book, ignoring empty values."""
+        """
+        ### Patch Book ###
+        Update a **book**, ignoring empty values.
+        ```Example Data:
+        {
+          "title": "new book title",
+          "author_id": "78424c75-5c41-4b25-9735-3c9f7d05c59e"
+        }
+        ```
+        """
         raw_obj = data.model_dump(exclude_unset=True, exclude_none=True)
         raw_obj.update({"id": book_id})
         obj = await book_repo.update(BookModel(**raw_obj))
@@ -145,6 +189,9 @@ class BookController(Controller):
                 description="The book to delete.",
             ),
     ) -> None:
-        """Delete a book from the system."""
+        """
+        ### Delete Book ###
+        Delete a **book** from the system.
+        """
         _ = await book_repo.delete(book_id)
         await book_repo.session.commit()
