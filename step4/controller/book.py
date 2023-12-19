@@ -68,7 +68,7 @@ class BookController(Controller):
         return Book.model_validate(obj)
 
     @get(path="/{book_id:uuid}")
-    async def get_author(
+    async def get_book(
         self,
         book_repo: BookRepository,
         book_id: UUID = Parameter(
@@ -81,7 +81,7 @@ class BookController(Controller):
         return Book.model_validate(obj)
 
     @put(path="/{book_id:uuid}",)
-    async def put_author(
+    async def put_book(
             self,
             book_repo: BookRepository,
             data: BookUpdate,
@@ -98,7 +98,7 @@ class BookController(Controller):
         return Book.model_validate(obj)
 
     @patch(path="/{book_id:uuid}",)
-    async def patch_author(
+    async def patch_book(
         self,
         book_repo: BookRepository,
         data: BookUpdate,
