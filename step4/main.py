@@ -11,7 +11,7 @@ from litestar.params import Parameter
 from litestar.repository.filters import LimitOffset
 from litestar.static_files import StaticFilesConfig
 
-from step3.controller.author import AuthorController
+from step4.controller.author import AuthorController
 
 
 def provide_limit_offset_pagination(

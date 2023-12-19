@@ -6,8 +6,8 @@ from uuid import UUID
 from advanced_alchemy.base import UUIDBase
 from sqlalchemy.orm import Mapped, relationship
 
-from step3.common import BaseModel
-from step3.model.book import BookModel
+from step4.common import BaseModel
+from step4.model.book import BookModel
 
 
 class AuthorModel(UUIDBase):

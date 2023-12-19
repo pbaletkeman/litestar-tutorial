@@ -11,8 +11,8 @@
 ### litestar --app step2.main:app run ###
 
 ### OpenAPI site can be accessed via: ###
-   - http://localhost:8000/schema
-   - http://localhost:8000/schema/swagger
-   - http://localhost:8000/schema/elements
-   - http://localhost:8000/schema/redoc
-   - http://localhost:8000/schema/rapidoc
+   - http://localhost:8000/docs
+   - http://localhost:8000/docs/swagger
+   - http://localhost:8000/docs/elements
+   - http://localhost:8000/docs/redoc
+   - http://localhost:8000/docs/rapidoc
