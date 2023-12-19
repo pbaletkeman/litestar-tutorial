@@ -3,8 +3,9 @@
    **PUT** is used to replace the entire resource with a new representation, meaning that all the fields of the resource are sent in the request body, even if they are not modified.
 2. Added default path for Author controller
 3. Added tag to Author controller
-4. Added `broti` compression with fall back to `gzip`, see https://docs.litestar.dev/latest/usage/middleware/builtin-middleware.html
-5. Cleanup some code by removing commented out code
+4. Updated pyproject.toml project requirements to include `broti` compression library
+5. Added `broti` compression with fall back to `gzip`, see https://docs.litestar.dev/latest/usage/middleware/builtin-middleware.html
+6. Cleanup some code by removing commented out code
  
 ### litestar --app step3.main:app run ###
 
