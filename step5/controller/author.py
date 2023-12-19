@@ -16,7 +16,7 @@ from litestar.repository.filters import LimitOffset
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from step5.model.author import AuthorModel, Author, AuthorCreate, AuthorUpdate
+from step5.model.author import AuthorModel, Author, AuthorCreate, AuthorUpdate, AuthorAndBooks
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
@@ -76,6 +76,19 @@ class AuthorController(Controller):
         )
         await authors_repo.session.commit()
         return Author.model_validate(obj)
+
+    @get(path="with-books/{author_id:uuid}", dependencies={"authors_repo": Provide(provide_author_details_repo)})
+    async def get_author_and_books(
+        self,
+        authors_repo: AuthorRepository,
+        author_id: UUID = Parameter(
+            title="Author ID",
+            description="The author to retrieve.",
+        ),
+    ) -> AuthorAndBooks:
+        """Get an existing author."""
+        obj = await authors_repo.get(author_id)
+        return AuthorAndBooks.model_validate(obj)
 
     @get(path="/{author_id:uuid}", dependencies={"authors_repo": Provide(provide_author_details_repo)})
     async def get_author(

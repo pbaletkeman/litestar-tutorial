@@ -1,5 +1,5 @@
-1. Ad
-
+1. Added endpoint to see author with all their books
+2. Added endpoint to allow for bulk addition of books
 
 ### litestar --app step5.main:app run ###
 

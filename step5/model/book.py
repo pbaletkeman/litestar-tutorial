@@ -22,6 +22,11 @@ class Book(BaseModel):
     author_id: UUID
 
 
+class BookWithOutAuthor(BaseModel):
+    id: UUID | None
+    title: str
+
+
 class BookCreate(BaseModel):
     title: str
     author_id: UUID
@@ -29,4 +34,9 @@ class BookCreate(BaseModel):
 
 class BookUpdate(BaseModel):
     title: str | None = None
+    author_id: UUID
+
+
+class BulkBookCreate(BaseModel):
+    title: list[str]
     author_id: UUID

@@ -7,7 +7,7 @@ from advanced_alchemy.base import UUIDBase
 from sqlalchemy.orm import Mapped, relationship
 
 from step5.common import BaseModel
-from step5.model.book import BookModel
+from step5.model.book import BookModel, Book, BookWithOutAuthor
 
 
 class AuthorModel(UUIDBase):
@@ -32,3 +32,10 @@ class AuthorCreate(BaseModel):
 class AuthorUpdate(BaseModel):
     name: str | None = None
     dob: date | None = None
+
+
+class AuthorAndBooks(BaseModel):
+    id: UUID | None
+    name: str
+    dob: date | None = None
+    books: list[BookWithOutAuthor] | None = None

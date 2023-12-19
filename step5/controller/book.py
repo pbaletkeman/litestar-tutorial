@@ -14,7 +14,7 @@ from litestar.pagination import OffsetPagination
 from litestar.params import Parameter
 from litestar.repository.filters import LimitOffset
 
-from step5.model.book import BookModel, Book, BookCreate, BookUpdate
+from step5.model.book import BookModel, Book, BookCreate, BookUpdate, BulkBookCreate
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
@@ -38,11 +38,19 @@ class BookController(Controller):
     path = "/book"
     tags = ["Book CRUD"]
 
+    class Helper:
+        @staticmethod
+        def convert_books(data: BulkBookCreate) -> list[dict[str, UUID]]:
+            # transform the list of strings to a list of BookCreate objects
+            # because this is a simple model we can use this one line
+            # this is instead of `data.model_dump`
+            return [{"title": title, "author_id": data.author_id} for title in data.title]
+
     @get()
     async def list_books(
-        self,
-        book_repo: BookRepository,
-        limit_offset: LimitOffset,
+            self,
+            book_repo: BookRepository,
+            limit_offset: LimitOffset,
     ) -> OffsetPagination[Book]:
         """List books."""
         results, total = await book_repo.list_and_count(limit_offset)
@@ -56,9 +64,9 @@ class BookController(Controller):
 
     @post()
     async def create_book(
-        self,
-        book_repo: BookRepository,
-        data: BookCreate,
+            self,
+            book_repo: BookRepository,
+            data: BookCreate,
     ) -> Book:
         """Create a new book."""
         obj = await book_repo.add(
@@ -67,20 +75,34 @@ class BookController(Controller):
         await book_repo.session.commit()
         return Book.model_validate(obj)
 
+    @post("/bulk")
+    async def bulk_create_book(
+            self,
+            book_repo: BookRepository,
+            data: BulkBookCreate,
+    ) -> list[Book]:
+        """Create a new book."""
+        new_data = self.Helper.convert_books(data)
+        obj = await book_repo.add_many(
+            [BookModel(**d) for d in new_data]
+        )
+        await book_repo.session.commit()
+        return [Book.model_validate(o) for o in obj]
+
     @get(path="/{book_id:uuid}")
     async def get_book(
-        self,
-        book_repo: BookRepository,
-        book_id: UUID = Parameter(
-            title="Book ID",
-            description="The book to retrieve.",
-        ),
+            self,
+            book_repo: BookRepository,
+            book_id: UUID = Parameter(
+                title="Book ID",
+                description="The book to retrieve.",
+            ),
     ) -> Book:
         """Get an existing book."""
         obj = await book_repo.get(book_id)
         return Book.model_validate(obj)
 
-    @put(path="/{book_id:uuid}",)
+    @put(path="/{book_id:uuid}", )
     async def put_book(
             self,
             book_repo: BookRepository,
@@ -97,15 +119,15 @@ class BookController(Controller):
         await book_repo.session.commit()
         return Book.model_validate(obj)
 
-    @patch(path="/{book_id:uuid}",)
+    @patch(path="/{book_id:uuid}", )
     async def patch_book(
-        self,
-        book_repo: BookRepository,
-        data: BookUpdate,
-        book_id: UUID = Parameter(
-            title="Book ID",
-            description="The book to update.",
-        ),
+            self,
+            book_repo: BookRepository,
+            data: BookUpdate,
+            book_id: UUID = Parameter(
+                title="Book ID",
+                description="The book to update.",
+            ),
     ) -> Book:
         """Update a book, ignoring empty values."""
         raw_obj = data.model_dump(exclude_unset=True, exclude_none=True)
@@ -116,12 +138,12 @@ class BookController(Controller):
 
     @delete(path="/{book_id:uuid}")
     async def delete_book(
-        self,
-        book_repo: BookRepository,
-        book_id: UUID = Parameter(
-            title="Book ID",
-            description="The book to delete.",
-        ),
+            self,
+            book_repo: BookRepository,
+            book_id: UUID = Parameter(
+                title="Book ID",
+                description="The book to delete.",
+            ),
     ) -> None:
         """Delete a book from the system."""
         _ = await book_repo.delete(book_id)
