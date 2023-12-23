@@ -77,7 +77,7 @@ class AuthorController(Controller):
         await authors_repo.session.commit()
         return Author.model_validate(obj)
 
-    @get(path="/{author_id:uuid}", dependencies={"authors_repo": Provide(provide_author_details_repo)})
+    @get(path="/{author_id:uuid}")
     async def get_author(
         self,
         authors_repo: AuthorRepository,
@@ -90,10 +90,7 @@ class AuthorController(Controller):
         obj = await authors_repo.get(author_id)
         return Author.model_validate(obj)
 
-    @put(
-        path="/{author_id:uuid}",
-        dependencies={"authors_repo": Provide(provide_author_details_repo)},
-    )
+    @put(path="/{author_id:uuid}")
     async def put_author(
             self,
             authors_repo: AuthorRepository,
@@ -110,10 +107,7 @@ class AuthorController(Controller):
         await authors_repo.session.commit()
         return Author.model_validate(obj)
 
-    @patch(
-        path="/{author_id:uuid}",
-        dependencies={"authors_repo": Provide(provide_author_details_repo)},
-    )
+    @patch(path="/{author_id:uuid}")
     async def patch_author(
         self,
         authors_repo: AuthorRepository,
