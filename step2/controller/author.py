@@ -76,7 +76,7 @@ class AuthorController(Controller):
         return Author.model_validate(obj)
 
     # we override the authors_repo to use the version that joins the Books in
-    @get(path="/authors/{author_id:uuid}", dependencies={"authors_repo": Provide(provide_author_details_repo)})
+    @get(path="/authors/{author_id:uuid}")
     async def get_author(
         self,
         authors_repo: AuthorRepository,
@@ -91,7 +91,6 @@ class AuthorController(Controller):
 
     @patch(
         path="/authors/{author_id:uuid}",
-        dependencies={"authors_repo": Provide(provide_author_details_repo)},
     )
     async def update_author(
         self,
