@@ -89,9 +89,7 @@ class AuthorController(Controller):
         obj = await authors_repo.get(author_id)
         return Author.model_validate(obj)
 
-    @patch(
-        path="/authors/{author_id:uuid}",
-    )
+    @patch(path="/authors/{author_id:uuid}")
     async def update_author(
         self,
         authors_repo: AuthorRepository,
