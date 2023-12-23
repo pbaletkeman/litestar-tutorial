@@ -80,7 +80,7 @@ class BookController(Controller):
         obj = await book_repo.get(book_id)
         return Book.model_validate(obj)
 
-    @put(path="/{book_id:uuid}",)
+    @put(path="/{book_id:uuid}")
     async def put_book(
             self,
             book_repo: BookRepository,
@@ -97,7 +97,7 @@ class BookController(Controller):
         await book_repo.session.commit()
         return Book.model_validate(obj)
 
-    @patch(path="/{book_id:uuid}",)
+    @patch(path="/{book_id:uuid}")
     async def patch_book(
         self,
         book_repo: BookRepository,
